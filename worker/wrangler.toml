@@ -1,0 +1,40 @@
+name = "thrief-api"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+[vars]
+ENVIRONMENT = "development"
+JWT_SECRET = "thrief-dev-jwt-secret-key-2024-change-in-prod"
+JWT_REFRESH_SECRET = "thrief-dev-refresh-secret-2024-change-in-prod"
+ADMIN_EMAIL = "admin@thrief.com"
+ADMIN_PASSWORD = "Admin@123456"
+CLIENT_URL = "http://localhost:5173"
+ESEWA_MERCHANT_CODE = "EPAYTEST"
+ESEWA_GATEWAY_URL = "https://rc-epay.esewa.com.np"
+KHALTI_GATEWAY_URL = "https://dev.khalti.com/api/v2"
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "thrief-db"
+database_id = "local-dev-id"
+
+# R2 Bucket
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "thrief-storage"
+
+# KV Namespace
+[[kv_namespaces]]
+binding = "KV"
+id = "local-dev-kv-id"
+
+# Durable Objects
+[durable_objects]
+bindings = [
+  { name = "CHAT_ROOM", class_name = "ChatRoom" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatRoom"]

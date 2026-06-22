@@ -1,0 +1,19 @@
+{
+  "name": "thrief-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate": "wrangler d1 execute thrief-db --local --file=./migrations/0001_initial_schema.sql",
+    "db:seed": "wrangler d1 execute thrief-db --local --file=./src/db/seed.sql"
+  },
+  "dependencies": {
+    "hono": "^4.0.0",
+    "aws4fetch": "^1.0.18"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
