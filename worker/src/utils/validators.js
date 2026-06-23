@@ -17,7 +17,7 @@ export function validateRole(role) {
 
 export function validateCategory(category) {
   return [
-    'clothes', 'electronics', 'skincare-beauty', 'furniture-home',
+    'clothes', 'electronics', 'phones', 'skincare-beauty', 'furniture-home',
     'books-stationery', 'sports-fitness', 'toys-games', 'vehicles', 'others'
   ].includes(category);
 }

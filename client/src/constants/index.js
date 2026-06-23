@@ -7,11 +7,14 @@ export const CATEGORIES = [
     { id: 'kids', name: "Kids' Clothing" },
   ]},
   { id: 'electronics', name: 'Electronics', icon: '📱', subCategories: [
-    { id: 'phones', name: 'Phones' },
     { id: 'laptops', name: 'Laptops' },
     { id: 'tvs', name: 'TVs' },
     { id: 'cameras', name: 'Cameras' },
     { id: 'accessories', name: 'Accessories' },
+  ]},
+  { id: 'phones', name: 'Phones', icon: '📲', subCategories: [
+    { id: 'android', name: 'Android' },
+    { id: 'iphone', name: 'iPhone' },
   ]},
   { id: 'skincare-beauty', name: 'Skin Care & Beauty', icon: '💄', subCategories: [
     { id: 'skincare', name: 'Skincare' },
