@@ -61,7 +61,7 @@ auth.post('/register', otpLimiter, async (c) => {
     // Send OTP
     const contact = email || phone;
     const contactType = email ? 'email' : 'phone';
-    await createAndSendOTP(c.env.DB, c.env.KV, id, 'registration', contact, contactType);
+    await createAndSendOTP(c.env.DB, c.env.KV, id, 'registration', contact, contactType, c.env);
 
     return c.json({
       message: 'Registration successful. Please verify your OTP.',
@@ -237,7 +237,7 @@ auth.post('/forgot-password', otpLimiter, async (c) => {
       return c.json({ message: 'If the account exists, an OTP has been sent.' });
     }
 
-    await createAndSendOTP(c.env.DB, c.env.KV, user.id, 'password-reset', contact, contactType);
+    await createAndSendOTP(c.env.DB, c.env.KV, user.id, 'password-reset', contact, contactType, c.env);
     return c.json({ message: 'If the account exists, an OTP has been sent.', userId: user.id });
   } catch (error) {
     return c.json({ error: error.message || 'Failed to send reset OTP' }, 500);
@@ -279,7 +279,7 @@ auth.post('/resend-otp', otpLimiter, async (c) => {
     const contact = user.email || user.phone;
     const contactType = user.email ? 'email' : 'phone';
 
-    await createAndSendOTP(c.env.DB, c.env.KV, userId, type, contact, contactType);
+    await createAndSendOTP(c.env.DB, c.env.KV, userId, type, contact, contactType, c.env);
     return c.json({ message: 'OTP resent successfully' });
   } catch (error) {
     return c.json({ error: error.message || 'Failed to resend OTP' }, 500);

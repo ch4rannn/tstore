@@ -6,7 +6,7 @@ async function hashOTP(code) {
   return await hashPassword(code);
 }
 
-export async function createAndSendOTP(db, kv, userId, type, contact, contactType) {
+export async function createAndSendOTP(db, kv, userId, type, contact, contactType, env) {
   // Rate limiting: max 3 OTPs per hour
   const rateLimitKey = `otp_rate:${contact}`;
   const currentCount = parseInt(await kv.get(rateLimitKey) || '0');
@@ -33,7 +33,7 @@ export async function createAndSendOTP(db, kv, userId, type, contact, contactTyp
 
   // Send OTP
   if (contactType === 'email') {
-    await sendEmailOTP(contact, code);
+    await sendEmailOTP(contact, code, env);
   } else {
     await sendSmsOTP(contact, code);
   }
@@ -76,24 +76,50 @@ export async function verifyOTPCode(db, userId, type, code) {
   return true;
 }
 
-async function sendEmailOTP(email, code) {
-  // In development, log to console. In production, use Resend API.
-  console.log(`📧 [DEV] OTP for ${email}: ${code}`);
+async function sendEmailOTP(email, code, env) {
+  const RESEND_API_KEY = env?.RESEND_API_KEY;
+  
+  if (!RESEND_API_KEY) {
+    console.log(`📧 [DEV] OTP for ${email}: ${code}`);
+    return;
+  }
 
-  // Production example with Resend:
-  // await fetch('https://api.resend.com/emails', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Authorization': `Bearer ${RESEND_API_KEY}`,
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({
-  //     from: 'Thrief <noreply@thrief.com>',
-  //     to: email,
-  //     subject: 'Your Thrief Verification Code',
-  //     html: `<h2>Your verification code is: <strong>${code}</strong></h2><p>This code expires in 5 minutes.</p>`,
-  //   }),
-  // });
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Thrief <onboarding@resend.dev>',
+        to: email,
+        subject: 'Your Thrief Verification Code',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 30px; background: #f9f9f9; border-radius: 12px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #E84118, #ff6348); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">T</div>
+            </div>
+            <h2 style="text-align: center; color: #1a1a1a; margin-bottom: 10px;">Verify Your Account</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 25px;">Enter this code to complete your registration:</p>
+            <div style="background: white; border: 2px dashed #E84118; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 20px;">
+              <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #E84118;">${code}</span>
+            </div>
+            <p style="text-align: center; color: #999; font-size: 13px;">This code expires in 5 minutes. Do not share it with anyone.</p>
+          </div>
+        `,
+      }),
+    });
+
+    if (!res.ok) {
+      const error = await res.text();
+      console.error('Resend error:', error);
+      throw new Error('Failed to send email');
+    }
+  } catch (err) {
+    console.error('Email send failed:', err);
+    throw new Error('Failed to send verification email. Please try again.');
+  }
 }
 
 async function sendSmsOTP(phone, code) {
