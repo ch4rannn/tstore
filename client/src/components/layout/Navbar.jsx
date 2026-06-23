@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Search, ShoppingBag, MessageCircle, User, Menu, X, Heart, LogOut, Settings, ChevronDown, Package } from 'lucide-react';
 import { logout } from '../../features/auth/authSlice';
-import { useSearchProductsQuery, useLogoutMutation } from '../../services/api';
+import { useSearchProductsQuery } from '../../services/api';
 
 export default function Navbar() {
   const { user, isAuthenticated } = useSelector((s) => s.auth);
@@ -12,7 +12,6 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [logoutApi] = useLogoutMutation();
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const dropdownRef = useRef(null);
   const searchRef = useRef(null);
@@ -46,7 +45,6 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
-    try { await logoutApi().unwrap(); } catch {}
     dispatch(logout());
     navigate('/login');
   };

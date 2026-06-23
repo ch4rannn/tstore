@@ -17,7 +17,7 @@ KHALTI_GATEWAY_URL = "https://dev.khalti.com/api/v2"
 [[d1_databases]]
 binding = "DB"
 database_name = "thrief-db"
-database_id = "local-dev-id"
+database_id = "d1679c6a-19dd-4f00-b119-9f240569c261"
 
 # R2 Bucket
 [[r2_buckets]]
@@ -27,7 +27,7 @@ bucket_name = "thrief-storage"
 # KV Namespace
 [[kv_namespaces]]
 binding = "KV"
-id = "local-dev-kv-id"
+id = "568ae59d92644b6c9b04734118b81ca5"
 
 # Durable Objects
 [durable_objects]
@@ -37,4 +37,4 @@ bindings = [
 
 [[migrations]]
 tag = "v1"
-new_classes = ["ChatRoom"]
+new_sqlite_classes = ["ChatRoom"]

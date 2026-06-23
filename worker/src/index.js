@@ -26,6 +26,8 @@ app.use('*', cors({
       'http://127.0.0.1:5173',
     ];
     // Also allow the CLIENT_URL if it's set (production)
+    if (c.env && c.env.CLIENT_URL && origin === c.env.CLIENT_URL) return origin;
+    
     // and any *.pages.dev for CF preview deployments
     if (allowed.includes(origin)) return origin;
     if (origin.endsWith('.pages.dev')) return origin;
