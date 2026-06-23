@@ -87,7 +87,7 @@ export default function PostProductPage() {
           fileName: file.name,
           contentType: file.type,
           fileSize: file.size,
-          type: 'product'
+          type: 'product-image'
         }).unwrap();
 
         await fetch(presignRes.uploadUrl, {
