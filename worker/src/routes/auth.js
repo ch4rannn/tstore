@@ -35,12 +35,21 @@ auth.post('/register', otpLimiter, async (c) => {
 
     // Check if user exists
     if (email) {
-      const existing = await c.env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email.toLowerCase()).first();
-      if (existing) return c.json({ error: 'Email already registered' }, 409);
+      const existing = await c.env.DB.prepare('SELECT id, is_verified FROM users WHERE email = ?').bind(email.toLowerCase()).first();
+      if (existing) {
+        if (existing.is_verified) return c.json({ error: 'Email already registered' }, 409);
+        // Delete unverified account so they can re-register
+        await c.env.DB.prepare('DELETE FROM otps WHERE user_id = ?').bind(existing.id).run();
+        await c.env.DB.prepare('DELETE FROM users WHERE id = ?').bind(existing.id).run();
+      }
     }
     if (phone) {
-      const existing = await c.env.DB.prepare('SELECT id FROM users WHERE phone = ?').bind(phone).first();
-      if (existing) return c.json({ error: 'Phone number already registered' }, 409);
+      const existing = await c.env.DB.prepare('SELECT id, is_verified FROM users WHERE phone = ?').bind(phone).first();
+      if (existing) {
+        if (existing.is_verified) return c.json({ error: 'Phone number already registered' }, 409);
+        await c.env.DB.prepare('DELETE FROM otps WHERE user_id = ?').bind(existing.id).run();
+        await c.env.DB.prepare('DELETE FROM users WHERE id = ?').bind(existing.id).run();
+      }
     }
 
     // Create user
