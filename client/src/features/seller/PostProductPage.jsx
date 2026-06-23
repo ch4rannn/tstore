@@ -90,10 +90,15 @@ export default function PostProductPage() {
           type: 'product-image'
         }).unwrap();
 
+        const token = localStorage.getItem('thrief_access_token');
+        
         await fetch(presignRes.uploadUrl, {
           method: 'PUT',
           body: file,
-          headers: { 'Content-Type': file.type }
+          headers: { 
+            'Content-Type': file.type,
+            'Authorization': `Bearer ${token}` 
+          }
         });
 
         uploadedUrls.push(presignRes.publicUrl);
@@ -204,7 +209,7 @@ export default function PostProductPage() {
                     <span className="text-[10px]">Add Photo</span>
                   </>
                 )}
-                <input type="file" multiple accept="image/jpeg,image/png,image/webp" onChange={handleImageUpload} className="hidden" disabled={uploading} />
+                <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploading} />
               </label>
             )}
           </div>

@@ -14,11 +14,11 @@ upload.post('/presign', async (c) => {
 
     // Validate type
     const allowedTypes = {
-      'product-image': { maxSize: 5 * 1024 * 1024, formats: ['image/jpeg', 'image/png', 'image/webp'], folder: 'products' },
+      'product-image': { maxSize: 10 * 1024 * 1024, formats: ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/avif', 'image/gif'], folder: 'products' },
       'product-video': { maxSize: 50 * 1024 * 1024, formats: ['video/mp4', 'video/webm'], folder: 'videos' },
-      'chat-image': { maxSize: 5 * 1024 * 1024, formats: ['image/jpeg', 'image/png', 'image/webp'], folder: 'chat' },
+      'chat-image': { maxSize: 5 * 1024 * 1024, formats: ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/avif', 'image/gif'], folder: 'chat' },
       'chat-video': { maxSize: 50 * 1024 * 1024, formats: ['video/mp4'], folder: 'chat-videos' },
-      'avatar': { maxSize: 2 * 1024 * 1024, formats: ['image/jpeg', 'image/png', 'image/webp'], folder: 'avatars' },
+      'avatar': { maxSize: 2 * 1024 * 1024, formats: ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/avif', 'image/gif'], folder: 'avatars' },
     };
 
     const config = allowedTypes[type];
@@ -26,7 +26,8 @@ upload.post('/presign', async (c) => {
       return c.json({ error: 'Invalid upload type' }, 400);
     }
 
-    if (!config.formats.includes(contentType)) {
+    // Allow any image format if it starts with image/
+    if (!contentType.startsWith('image/') && !config.formats.includes(contentType)) {
       return c.json({ error: `Invalid file format. Allowed: ${config.formats.join(', ')}` }, 400);
     }
 
@@ -37,7 +38,7 @@ upload.post('/presign', async (c) => {
     // For R2, we'll use direct upload through the worker
     // Return the upload endpoint and the final public URL
     return c.json({
-      uploadUrl: `/api/upload/file`,
+      uploadUrl: `/api/upload/file/${key}`,
       key,
       publicUrl: `/api/upload/file/${key}`,
       maxSize: config.maxSize,
