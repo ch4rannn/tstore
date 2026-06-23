@@ -33,16 +33,16 @@ export default function HomePage() {
           <div className="animate-slideUp">
             <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur text-white text-xs font-medium px-4 py-1.5 rounded-full mb-6">
               <Sparkles className="w-3.5 h-3.5" />
-              Nepal's #1 Second-Hand Marketplace
+              Nepal's #1 Thrift Fashion Marketplace
             </span>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
-              Buy & Sell Used<br />
+              Thrift Fashion,<br />
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(135deg, #ff6348, #fdcb6e)' }}>
-                Products in Nepal
+                Redefined in Nepal
               </span>
             </h1>
             <p className="text-white/70 text-sm sm:text-lg max-w-xl mx-auto mb-8">
-              Find amazing deals on pre-loved items. From electronics to fashion — everything secondhand, everything affordable.
+              Discover pre-loved clothing, sneakers, and accessories at unbeatable prices. Look stylish, save money, shop sustainable.
             </p>
 
             {/* Hero Search */}
@@ -50,7 +50,7 @@ export default function HomePage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="What are you looking for?"
+                placeholder="Search for t-shirts, sneakers, jackets..."
                 value={heroSearch}
                 onChange={(e) => setHeroSearch(e.target.value)}
                 className="w-full pl-12 pr-32 py-4 rounded-2xl text-[var(--color-text)] bg-white shadow-xl text-base focus:ring-4 focus:ring-[var(--color-primary)]/20 outline-none"
@@ -84,6 +84,39 @@ export default function HomePage() {
           {CATEGORIES.map((cat) => (
             <CategoryTile key={cat.id} category={cat} />
           ))}
+        </div>
+      </section>
+
+      {/* ═══ Shop Clothing — Featured Section ═══ */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        <div className="rounded-2xl overflow-hidden relative" style={{ background: 'linear-gradient(135deg, #2d3436 0%, #636e72 100%)' }}>
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
+          </div>
+          <div className="relative p-6 sm:p-10">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-2xl">👕</span>
+              <h2 className="text-xl sm:text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-heading)' }}>Shop Clothing</h2>
+            </div>
+            <p className="text-white/60 text-sm mb-6 max-w-lg">Browse pre-loved fashion by category — from branded t-shirts and sneakers to traditional Nepali wear.</p>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.find(c => c.id === 'clothes')?.subCategories.slice(0, 10).map((sub) => (
+                <Link
+                  key={sub.id}
+                  to={`/category/clothes?sub=${sub.id}`}
+                  className="bg-white/10 hover:bg-white/20 backdrop-blur text-white text-xs sm:text-sm font-medium px-4 py-2 rounded-xl transition-all hover:-translate-y-0.5"
+                >
+                  {sub.name}
+                </Link>
+              ))}
+              <Link
+                to="/category/clothes"
+                className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs sm:text-sm font-semibold px-5 py-2 rounded-xl transition-all hover:-translate-y-0.5 flex items-center gap-1"
+              >
+                View All <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -152,13 +185,13 @@ export default function HomePage() {
           </div>
           <div className="relative">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
-              Got something to sell?
+              Closet full of clothes you don't wear?
             </h2>
             <p className="text-white/80 mb-6 max-w-md mx-auto">
-              List your used products for just Rs 5 and reach thousands of buyers across Nepal.
+              Turn your old wardrobe into cash. List your pre-loved fashion and reach thousands of buyers across Nepal.
             </p>
             <Link to="/seller/post" className="inline-flex items-center gap-2 bg-white text-[var(--color-primary)] font-semibold px-8 py-3 rounded-xl hover:bg-white/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-              Start Selling <ArrowRight className="w-4 h-4" />
+              Sell Your Clothes <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

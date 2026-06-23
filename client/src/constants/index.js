@@ -2,9 +2,21 @@
 
 export const CATEGORIES = [
   { id: 'clothes', name: 'Clothes', icon: '👕', subCategories: [
-    { id: 'mens', name: "Men's Clothing" },
-    { id: 'womens', name: "Women's Clothing" },
-    { id: 'kids', name: "Kids' Clothing" },
+    { id: 'mens-tshirts', name: "Men's T-Shirts" },
+    { id: 'mens-shirts', name: "Men's Shirts" },
+    { id: 'mens-pants', name: "Men's Pants & Jeans" },
+    { id: 'mens-jackets', name: "Men's Jackets & Hoodies" },
+    { id: 'womens-tops', name: "Women's Tops & Blouses" },
+    { id: 'womens-dresses', name: "Women's Dresses & Kurtas" },
+    { id: 'womens-pants', name: "Women's Pants & Jeans" },
+    { id: 'womens-jackets', name: "Women's Jackets & Sweaters" },
+    { id: 'kids-clothing', name: "Kids' Clothing" },
+    { id: 'shoes-sneakers', name: "Shoes & Sneakers" },
+    { id: 'traditional', name: "Traditional & Ethnic Wear" },
+    { id: 'sportswear', name: "Sportswear & Activewear" },
+    { id: 'innerwear', name: "Innerwear & Loungewear" },
+    { id: 'bags-wallets', name: "Bags, Wallets & Belts" },
+    { id: 'watches-accessories', name: "Watches & Accessories" },
   ]},
   { id: 'electronics', name: 'Electronics', icon: '📱', subCategories: [
     { id: 'laptops', name: 'Laptops' },
